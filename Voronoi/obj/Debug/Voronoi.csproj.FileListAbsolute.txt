@@ -1,0 +1,9 @@
+C:\Users\natha\Documents\Visual Studio 2015\Projects\Voronoi\Voronoi\bin\Debug\Voronoi.exe.config
+C:\Users\natha\Documents\Visual Studio 2015\Projects\Voronoi\Voronoi\bin\Debug\Voronoi.exe
+C:\Users\natha\Documents\Visual Studio 2015\Projects\Voronoi\Voronoi\bin\Debug\Voronoi.pdb
+C:\Users\natha\Documents\Visual Studio 2015\Projects\Voronoi\Voronoi\obj\Debug\Voronoi.csprojResolveAssemblyReference.cache
+C:\Users\natha\Documents\Visual Studio 2015\Projects\Voronoi\Voronoi\obj\Debug\Voronoi.Form1.resources
+C:\Users\natha\Documents\Visual Studio 2015\Projects\Voronoi\Voronoi\obj\Debug\Voronoi.Properties.Resources.resources
+C:\Users\natha\Documents\Visual Studio 2015\Projects\Voronoi\Voronoi\obj\Debug\Voronoi.csproj.GenerateResource.Cache
+C:\Users\natha\Documents\Visual Studio 2015\Projects\Voronoi\Voronoi\obj\Debug\Voronoi.exe
+C:\Users\natha\Documents\Visual Studio 2015\Projects\Voronoi\Voronoi\obj\Debug\Voronoi.pdb
