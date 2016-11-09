@@ -2,7 +2,7 @@
 
 ![Screenshot](https://raw.githubusercontent.com/thewildnath/Voronoi-Filter/master/Voronoi/bin/Debug/NathanCollage.png)
 ![Screenshot](https://raw.githubusercontent.com/thewildnath/Voronoi-Filter/master/Voronoi/bin/Debug/MonaCollage.png)
-![Screenshot](https://raw.githubusercontent.com/thewildnath/Voronoi-Filter/master/Voronoi/bin/Debug/Sydney.png)
+![Screenshot](https://raw.githubusercontent.com/thewildnath/Voronoi-Filter/master/Voronoi/bin/Debug/SydneyCollage.png)
 
 # TODO
 - Weighted choosing of voronoi points for much better detail
