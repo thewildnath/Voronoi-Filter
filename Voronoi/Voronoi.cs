@@ -7,30 +7,48 @@ using System.Threading.Tasks;
 
 namespace Voronoi {
   class Voronoi {
-    public Point lowerLimits = new Point(-1000, -1000);
-    public Point upperLimits = new Point(1000, 1000);
+    float width;
+    float height;
+    float border;
 
-    public Point[] VoronoiPolygon(Point[] points, int index) {
-      Point center = points[index];
-      List<Point> dualPoints = new List<Point>();
+    public Voronoi(int width, int height, int border = 5) {
+      this.width = width - 1;
+      this.height = height - 1;
+      this.border = border;
+    }
+
+    public PointF[] GetPolygon(int index, PointF[] points_inp) {
+      PointF[] points = new PointF[points_inp.Length];
+      for (int i = 0; i < points_inp.Length; ++i)
+        points[i] = new PointF(
+          points_inp[i].X - width / 2, 
+          points_inp[i].Y - height / 2);
+
+      PointF center = points[index];
+      List<PointF> dualPoints = new List<PointF>();
 
       for (int i = 0; i < points.Length; ++i) {
-        if (points[i] != center) {
+        bool ok = points[i] != center;
+        for (int j = i + 1; j < points.Length && ok; ++j)
+          if (points[i] == points[j])
+            ok = false;
+        if (ok) {
           Line2D bisector = new Segment2D(
-            new Point(0, 0), 
-            new Point(points[i].X - center.X)).Bisector();          // ~OPTIMIZATION
-          Point dual = bisector.Dual();
+            new PointF(0, 0), 
+            new PointF(points[i].X - center.X, 
+                        points[i].Y - center.Y)).Bisector();          // ~OPTIMIZATION
+          PointF dual = bisector.Dual();
           dualPoints.Add(dual);
         }
       }
 
-      dualPoints.Add(new Line2D(1, 0, lowerLimits.X + center.X).Dual());
-      dualPoints.Add(new Line2D(1, 0, upperLimits.X + center.X).Dual());
-      dualPoints.Add(new Line2D(0, 1, lowerLimits.Y + center.Y).Dual());
-      dualPoints.Add(new Line2D(0, 1, upperLimits.Y + center.Y).Dual());
+      dualPoints.Add(new Line2D(1, 0, -width / 2 - border + center.X).Dual());
+      dualPoints.Add(new Line2D(1, 0, width / 2 + border + center.X).Dual());
+      dualPoints.Add(new Line2D(0, 1, -height / 2 - border + center.Y).Dual());
+      dualPoints.Add(new Line2D(0, 1, height / 2 + border + center.Y).Dual());
 
-      Point[] dualConvexHull = ConvexHull(dualPoints.ToArray());
-      Point[] polygon = new Point[dualConvexHull.Length - 1];
+      PointF[] dualConvexHull = ConvexHull(dualPoints.ToArray());
+      PointF[] polygon = new PointF[dualConvexHull.Length - 1];
 
       for (int i = 0; i < dualConvexHull.Length - 1; ++i) {
         polygon[i] = new Line2D(dualConvexHull[i], dualConvexHull[i + 1]).Dual();
@@ -38,10 +56,29 @@ namespace Voronoi {
         polygon[i].Y += center.Y;
       }
 
+      for (int i = 0; i < polygon.Length; ++i) {
+        polygon[i].X = Clamp(polygon[i].X, -width / 2, width / 2);
+        polygon[i].Y = Clamp(polygon[i].Y, -height / 2, height / 2);
+
+        polygon[i].X += width / 2;
+        polygon[i].Y += height / 2;
+      }
+
       return polygon;
     }
 
-    float ccw(Point p1, Point origin, Point p2) {
+    float Clamp(float val, float min, float max) {
+      if (float.IsNaN(val))
+        val = max;
+      if (val < min)
+        return min;
+      else if (val > max)
+        return max;
+      else
+        return val;
+    }
+
+    double ccw(PointF p1, PointF origin, PointF p2) {
       p1.X -= origin.X;
       p1.Y -= origin.Y;
       p2.X -= origin.X;
@@ -49,7 +86,7 @@ namespace Voronoi {
       return p1.X * p2.Y - p2.X * p1.Y;
     }
 
-    public Point[] ConvexHull(Point[] points) {                                                   // PRIVAT
+    public PointF[] ConvexHull(PointF[] points) {                                                   // PRIVAT
 
       if (points.Length <= 2)
         return points;
@@ -86,14 +123,14 @@ namespace Voronoi {
         }
       }
 
-      Point[] hull = new Point[stack.Count];
+      PointF[] hull = new PointF[stack.Count];
       for (int i = 0; i < stack.Count; ++i)
         hull[i] = points[stack[i]];
 
       return hull;
     }
 
-    int Vector2Comparer(Point p1, Point p2) {
+    int Vector2Comparer(PointF p1, PointF p2) {
       if (p1 == p2)
         return 0;
       if (p1.X == p2.X)
@@ -110,8 +147,8 @@ namespace Voronoi {
       this.height = height;
     }
 
-    public Point[] GetPolygon(int index, Point[] points) {
-      List<Point> polygon = new List<Point>();
+    public PointF[] GetPolygon(int index, PointF[] points) {
+      List<PointF> polygon = new List<PointF>();
 
 
 

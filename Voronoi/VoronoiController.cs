@@ -17,7 +17,9 @@ namespace Voronoi {
     public bool modified;
 
     public List<Point> points;
-    public List<PolygonFilterInfo> info;
+    public List<FilterInfo> info;
+
+    Random random;
 
     public VoronoiController(int width, int height) {
       this.width = width;
@@ -30,7 +32,9 @@ namespace Voronoi {
       modified = false;
 
       points = new List<Point>();
-      info = new List<PolygonFilterInfo>();
+      info = new List<FilterInfo>();
+
+      random = new Random();
     }
 
     public void MouseDown(int type, int posX, int posY) {
@@ -71,27 +75,25 @@ namespace Voronoi {
       return new Tuple<int, int>(index, minDist);
     }
 
-    void CreatePoint(int posX, int posY) {
+    public void CreatePoint(int posX, int posY) {
       points.Add(new Point(posX, posY));
-      Random random = new Random();
       Color color = Color.FromArgb(
         random.Next(0, 255), 
         random.Next(0, 255), 
         random.Next(0, 255));
-      info.Add(new PolygonFilterInfo(
-        PolygonFilterInfo.FilterType.solidColor, 
+      info.Add(new FilterInfo(
+        FilterInfo.FilterType.mean, 
         color));
       modified = true;
     }
 
-    void DeletePoint(int index) {
+    public void DeletePoint(int index) {
       points.RemoveAt(index);
       info.RemoveAt(index);
 
       modified = true;
     }
 
-    // TODO - use ref? Not Quite right...
     Point MovePoint(Point point, int posX, int posY) {
       point.X = Clamp(posX, 0, width - 1);
       point.Y = Clamp(posY, 0, height - 1);
