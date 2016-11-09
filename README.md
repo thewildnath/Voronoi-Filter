@@ -7,3 +7,4 @@
 # TODO
 - Weighted choosing of voronoi points for much better detail
 - Antialiasing for better looking results
+- Multithreading
